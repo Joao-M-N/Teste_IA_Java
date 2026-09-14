@@ -15,6 +15,8 @@ Abra o terminal na pasta do projeto.
 .\run.ps1 -Test
 ```
 
+Se a política do PowerShell bloquear o script, execute `powershell -ExecutionPolicy Bypass -File .\run.ps1` para a demonstração ou acrescente `-Test` para os testes. Essa opção vale apenas para o processo iniciado. O script configura a saída em UTF-8 durante a execução para exibir corretamente acentos e valores monetários, restaurando a codificação anterior ao terminar.
+
 **Linux / macOS:**
 
 ```sh

@@ -1,7 +1,12 @@
-param([switch]$Test)
+﻿param([switch]$Test)
 $ErrorActionPreference = 'Stop'
+$previousOutputEncoding = [Console]::OutputEncoding
+$previousPipelineEncoding = $OutputEncoding
 Push-Location $PSScriptRoot
 try {
+    # Keep Java output and the terminal decoder on the same encoding.
+    [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
+    $OutputEncoding = [Console]::OutputEncoding
     if (-not (Get-Command javac -ErrorAction SilentlyContinue)) {
         throw 'Instale o JDK 17 ou superior e adicione seu diretório bin ao PATH.'
     }
@@ -16,5 +21,7 @@ try {
     & java '-Dfile.encoding=UTF-8' '-Dstdout.encoding=UTF-8' '-Dstderr.encoding=UTF-8' -cp 'build/classes' $mainClass
     if ($LASTEXITCODE -ne 0) { throw 'Falha na execução.' }
 } finally {
+    [Console]::OutputEncoding = $previousOutputEncoding
+    $OutputEncoding = $previousPipelineEncoding
     Pop-Location
 }
